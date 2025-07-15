@@ -1,3 +1,4 @@
+<!-- src/components/RecipeList.vue -->
 <template>
   <table>
     <thead>
@@ -7,7 +8,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr v-for="recipe in recipes" :key="recipe.name">
+    <tr v-for="recipe in recipes" :key="recipe.id">
       <td>{{ recipe.name }}</td>
       <td>{{ recipe.score }}</td>
     </tr>
@@ -16,8 +17,10 @@
 </template>
 
 <script setup lang="ts">
+import type { Recipe } from '@/types/Recipe'
+
 defineProps<{
-  recipes: { name: string; score: number }[]
+  recipes: Recipe[]
 }>()
 </script>
 
