@@ -1,4 +1,3 @@
-<!-- src/components/RecipeList.vue -->
 <template>
   <table>
     <thead>
@@ -17,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Recipe } from '@/types/Recipe'
+import type { Recipe } from '@/stores/recipe'
 
 defineProps<{
   recipes: Recipe[]

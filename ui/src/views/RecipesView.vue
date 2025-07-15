@@ -6,17 +6,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import RecipeList from '@/components/RecipeList.vue'
-import type { Recipe } from '@/types/Recipe'
+import { useRecipeStore } from '@/stores/recipe'
 
-const recipes = ref<Recipe[]>([])
+const recipeStore = useRecipeStore()
 
 onMounted(() => {
-  recipes.value = [
-    { id: '1', name: 'Tarta de manzana', score: 4.5 },
-    { id: '2', name: 'Milanesas con puré', score: 5 },
-    { id: '3', name: 'Ensalada César', score: 3.8 }
-  ]
+  recipeStore.fetchRecipes()
 })
+
+const recipes = recipeStore.recipes
 </script>
