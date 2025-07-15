@@ -6,15 +6,12 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import RecipeList from '@/components/RecipeList.vue'
 import { useRecipeStore } from '@/stores/recipe'
+import { storeToRefs } from 'pinia'
 
 const recipeStore = useRecipeStore()
+const { recipes } = storeToRefs(recipeStore)
 
-onMounted(() => {
-  recipeStore.fetchRecipes()
-})
-
-const recipes = recipeStore.recipes
+recipeStore.fetchRecipes()
 </script>

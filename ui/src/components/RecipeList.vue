@@ -8,7 +8,11 @@
     </thead>
     <tbody>
     <tr v-for="recipe in recipes" :key="recipe.id">
-      <td>{{ recipe.name }}</td>
+      <td>
+        <router-link :to="`/recipes/${recipe.id}`">
+          {{ recipe.name }}
+        </router-link>
+      </td>
       <td>{{ recipe.score }}</td>
     </tr>
     </tbody>
@@ -17,7 +21,6 @@
 
 <script setup lang="ts">
 import type { Recipe } from '@/stores/recipe'
-
 defineProps<{
   recipes: Recipe[]
 }>()
@@ -35,5 +38,13 @@ th, td {
 th {
   background-color: #333333;
   text-align: left;
+}
+
+a {
+  text-decoration: none;
+  color: #007bff;
+}
+a:hover {
+  text-decoration: underline;
 }
 </style>
