@@ -12,6 +12,7 @@ func main() {
 
 	api := app.Group("/api/v1")
 	api.Get("/recipes", handler.GetRecipes)
+	app.Get("/api/v1/recipes/:id", handler.GetRecipeByID)
 
 	app.Listen(":3000")
 }

@@ -4,63 +4,74 @@
 
     <div class="tabs">
       <button
-        :class="{ active: activeTab === 'ingredientes' }"
-        @click="activeTab = 'ingredientes'"
+          :class="{ active: activeTab === 'ingredients' }"
+          @click="activeTab = 'ingredients'"
       >
         Ingredientes
       </button>
       <button
-        :class="{ active: activeTab === 'pasos' }"
-        @click="activeTab = 'pasos'"
+          :class="{ active: activeTab === 'steps' }"
+          @click="activeTab = 'steps'"
       >
         Pasos
       </button>
     </div>
 
     <div class="tab-content">
-      <div v-if="activeTab === 'ingredientes'">
+      <div v-if="activeTab === 'ingredients'">
         <label>
           Para
           <input type="number" min="1" v-model.number="people" />
           personas
         </label>
         <ul>
-          <li v-for="(ingredient, index) in recipe.ingredients" :key="index">
-            {{ ingredient.quantityPerPerson * people }} {{ ingredient.unit }} {{ ingredient.name }}
+          <li
+              v-for="(ri, index) in recipe.ingredients"
+              :key="index"
+          >
+            {{ (ri.quantityPerPerson * people).toFixed(2)  }}
+            {{ ri.ingredient.unit }}
+            {{ ri.ingredient.name }}
           </li>
         </ul>
       </div>
 
-      <div v-if="activeTab === 'pasos'">
+      <div v-if="activeTab === 'steps'">
         <ul>
-          <li v-for="(step, index) in recipe.steps" :key="index">
-            {{ step }}
+          <li
+              v-for="step in recipe.steps"
+              :key="step.id"
+          >
+            {{ step.description }}
           </li>
         </ul>
       </div>
     </div>
+    <router-link to="/recipes" class="back-link">Volver al listado</router-link>
   </section>
 
   <p v-else>Cargando receta...</p>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useRecipeStore } from '@/stores/recipe'
+import { storeToRefs } from 'pinia'
 
 const route = useRoute()
 const recipeStore = useRecipeStore()
+const { selectedRecipe } = storeToRefs(recipeStore)
 
-const recipeId = route.params.id as string
-const recipe = ref()
-
-const activeTab = ref<'ingredientes' | 'pasos'>('ingredientes')
+const activeTab = ref<'ingredients' | 'steps'>('ingredients')
 const people = ref(4)
 
 onMounted(() => {
-  recipe.value = recipeStore.getRecipeById(recipeId)
+  const id = Number(route.params.id)
+  recipeStore.fetchRecipeById(id)
 })
+
+const recipe = computed(() => selectedRecipe.value)
 </script>
 
 <style scoped>
@@ -102,4 +113,17 @@ input[type="number"] {
   text-align: center;
   margin: 0 0.5rem;
 }
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: #007bff;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
 </style>
