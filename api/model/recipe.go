@@ -27,6 +27,11 @@ type Recipe struct {
 	Score float64 `json:"score"`
 }
 
+type RecipeRating struct {
+	RecipeID int
+	Value    int
+}
+
 // DATA SET
 
 var Ingredients = []Ingredient{
@@ -43,16 +48,16 @@ var Ingredients = []Ingredient{
 }
 
 var Recipes = []Recipe{
-	{ID: 1, Name: "Arroz con Pollo", Score: 4.5},
-	{ID: 2, Name: "Fideos con Salsa", Score: 4.2},
-	{ID: 3, Name: "Milanesas con Puré", Score: 5.0},
-	{ID: 4, Name: "Tortilla de Papas", Score: 4.6},
-	{ID: 5, Name: "Hamburguesas Caseras", Score: 4.0},
-	{ID: 6, Name: "Sopa de Verduras", Score: 3.8},
-	{ID: 7, Name: "Pollo al Horno", Score: 4.3},
-	{ID: 8, Name: "Arroz Primavera", Score: 4.1},
-	{ID: 9, Name: "Panqueques", Score: 4.7},
-	{ID: 10, Name: "Ensalada Mixta", Score: 3.9},
+	{ID: 1, Name: "Arroz con Pollo", Score: 0},
+	{ID: 2, Name: "Fideos con Salsa", Score: 0},
+	{ID: 3, Name: "Milanesas con Puré", Score: 0},
+	{ID: 4, Name: "Tortilla de Papas", Score: 0},
+	{ID: 5, Name: "Hamburguesas Caseras", Score: 0},
+	{ID: 6, Name: "Sopa de Verduras", Score: 0},
+	{ID: 7, Name: "Pollo al Horno", Score: 0},
+	{ID: 8, Name: "Arroz Primavera", Score: 0},
+	{ID: 9, Name: "Panqueques", Score: 0},
+	{ID: 10, Name: "Ensalada Mixta", Score: 0},
 }
 
 var RecipeIngredients = []RecipeIngredient{
@@ -110,3 +115,5 @@ var Steps = []Step{
 	{ID: 19, RecipeID: 10, Description: "Lavar vegetales", Order: 1},
 	{ID: 20, RecipeID: 10, Description: "Cortar y servir con aderezo", Order: 2},
 }
+
+var RecipeRatings = []RecipeRating{}

@@ -30,3 +30,12 @@ type StepJSON struct {
 	Description string `json:"description"`
 	Order       int    `json:"order"`
 }
+
+type RateRecipeRequest struct {
+	Value int `json:"value"`
+}
+
+type RateRecipeResponse struct {
+	RecipeID int     `json:"recipe_id"`
+	Score    float64 `json:"score"`
+}

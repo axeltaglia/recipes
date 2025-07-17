@@ -16,6 +16,7 @@ func main() {
 	api := app.Group("/api/v1")
 	api.Get("/recipes", handler.GetRecipes)
 	app.Get("/api/v1/recipes/:id", handler.GetRecipeByID)
+	app.Post("/api/v1/recipes/:id/rate", handler.RateRecipe)
 
 	err := app.Listen(":9123")
 	if err != nil {
