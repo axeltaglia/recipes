@@ -1,12 +1,15 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"log"
 	handler "recipes/handlers"
 )
 
 func main() {
+	fmt.Println("Starting server...")
 	app := fiber.New()
 	app.Use(cors.New())
 
@@ -14,5 +17,9 @@ func main() {
 	api.Get("/recipes", handler.GetRecipes)
 	app.Get("/api/v1/recipes/:id", handler.GetRecipeByID)
 
-	app.Listen(":3000")
+	err := app.Listen(":9123")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
 }
