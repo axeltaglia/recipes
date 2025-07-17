@@ -43,10 +43,24 @@ export const useRecipeStore = defineStore('recipe', () => {
     selectedRecipe.value = data
   }
 
+  async function rateRecipe(id: number, value: number) {
+    const { data } = await axios.post<{ score: number }>(`/api/v1/recipes/${id}/rate`, { value })
+
+    const recipe = recipes.value.find(r => r.id === id)
+    if (recipe) {
+      recipe.score = data.score
+    }
+
+    if (selectedRecipe.value && selectedRecipe.value.id === id) {
+      selectedRecipe.value.score = data.score
+    }
+  }
+
   return {
     recipes,
     selectedRecipe,
     fetchRecipes,
     fetchRecipeById,
+    rateRecipe
   }
 })

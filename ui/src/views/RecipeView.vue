@@ -1,6 +1,6 @@
 <template>
   <section v-if="recipe">
-    <h1>{{ recipe.name }} ({{ recipe.score }})</h1>
+    <h1>{{ recipe.name }} ({{ recipe.score.toFixed(2) }})</h1>
 
     <div class="tabs">
       <button
@@ -47,6 +47,14 @@
         </ul>
       </div>
     </div>
+    <div class="rating">
+      <select v-model="selectedRating">
+        <option disabled value="">Puntaje</option>
+        <option v-for="n in 5" :key="n" :value="n">{{ n }}</option>
+      </select>
+      <button @click="submitRating">Guardar</button>
+    </div>
+
     <router-link to="/recipes" class="back-link">Volver al listado</router-link>
   </section>
 
@@ -72,6 +80,15 @@ onMounted(() => {
 })
 
 const recipe = computed(() => selectedRecipe.value)
+
+const selectedRating = ref<number | ''>('')
+
+async function submitRating() {
+  if (!recipe.value || selectedRating.value === '') return
+  await recipeStore.rateRecipe(recipe.value.id, Number(selectedRating.value))
+  selectedRating.value = ''
+}
+
 </script>
 
 <style scoped>
@@ -125,5 +142,26 @@ input[type="number"] {
 .back-link:hover {
   text-decoration: underline;
 }
+
+.rating {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+select {
+  padding: 0.4rem;
+  font-size: 1rem;
+}
+
+button {
+  padding: 0.4rem 1rem;
+  font-size: 1rem;
+  background-color: #ddd;
+  border: 1px solid #999;
+  cursor: pointer;
+}
+
 
 </style>

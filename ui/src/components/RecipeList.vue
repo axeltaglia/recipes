@@ -13,7 +13,7 @@
           {{ recipe.name }}
         </router-link>
       </td>
-      <td>{{ recipe.score }}</td>
+      <td>{{ recipe.score.toFixed(2) }}</td>
     </tr>
     </tbody>
   </table>
