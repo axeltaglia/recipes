@@ -3,13 +3,27 @@ package handler
 import (
 	"github.com/gofiber/fiber/v2"
 	"recipes/model"
+	"sort"
 	"strings"
 )
 
 func GetRecipes(c *fiber.Ctx) error {
 	search := strings.ToLower(c.Query("search", ""))
+	limit := c.QueryInt("limit", 0)
+	orderByScore := c.Query("order_by_score", "")
+
+	if orderByScore == "asc" {
+		sort.Slice(model.Recipes, func(i, j int) bool {
+			return model.Recipes[i].Score < model.Recipes[j].Score
+		})
+	} else if orderByScore == "desc" {
+		sort.Slice(model.Recipes, func(i, j int) bool {
+			return model.Recipes[i].Score > model.Recipes[j].Score
+		})
+	}
 
 	var result []GetRecipesResponse
+	var count int
 
 	for _, recipe := range model.Recipes {
 		if search != "" {
@@ -36,6 +50,10 @@ func GetRecipes(c *fiber.Ctx) error {
 			Name:  recipe.Name,
 			Score: recipe.Score,
 		})
+		count++
+		if limit > 0 && count == limit {
+			break
+		}
 	}
 
 	return c.Status(fiber.StatusOK).JSON(result)
