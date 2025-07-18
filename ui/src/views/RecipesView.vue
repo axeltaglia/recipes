@@ -8,6 +8,8 @@
     </form>
 
     <RecipeList :recipes="recipes" />
+
+    <router-link to="/ratings" class="back-link">Ver Valoraciones</router-link>
   </section>
 </template>
 
@@ -49,5 +51,13 @@ button {
   border: 1px solid #ccc;
   font-size: 1rem;
   cursor: pointer;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: #007bff;
+  text-decoration: none;
+  font-size: 0.95rem;
 }
 </style>

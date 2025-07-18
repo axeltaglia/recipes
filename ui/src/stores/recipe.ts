@@ -32,9 +32,21 @@ export const useRecipeStore = defineStore('recipe', () => {
   const recipes = ref<Recipe[]>([])
   const selectedRecipe = ref<Recipe | null>(null)
 
-  async function fetchRecipes(search?: string) {
-    const query = search ? `?search=${encodeURIComponent(search)}` : ''
-    const { data } = await axios.get<Recipe[]>(`/api/v1/recipes${query}`)
+  async function fetchRecipes(search?: string, orderByScore?: string, limit?: number) {
+    const params = new URLSearchParams()
+
+    if (search) {
+      params.append('search', search)
+    }
+    if (orderByScore) {
+      params.append('order_by_score', orderByScore)
+    }
+    if (limit && limit > 0) {
+      params.append('limit', limit.toString())
+    }
+
+    const queryString = params.toString()
+    const { data } = await axios.get<Recipe[]>(`/api/v1/recipes${queryString ? '?' + queryString : ''}`)
     recipes.value = data
   }
 
