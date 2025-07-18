@@ -1,0 +1,153 @@
+openapi: 3.0.0
+info:
+  title: Recipe Admin API
+  description: A simple in-memory API for managing recipes, ingredients, and ratings.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:9123/api/v1
+    description: Local server
+
+paths:
+  /recipes:
+    get:
+      summary: Get list of recipes
+      parameters:
+        - name: search
+          in: query
+          description: Search term for filtering by recipe name or ingredient name
+          required: false
+          schema:
+            type: string
+        - name: order_by_score
+          in: query
+          description: Order recipes by score (asc or desc)
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+        - name: limit
+          in: query
+          description: Limit the number of recipes returned
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: List of recipes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecipeSummary'
+
+  /recipes/{id}:
+    get:
+      summary: Get a recipe by ID with ingredients and steps
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A recipe object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeDetail'
+        '404':
+          description: Recipe not found
+
+  /recipes/{id}/rate:
+    post:
+      summary: Rate a recipe
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                value:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+      responses:
+        '200':
+          description: New average score
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  score:
+                    type: number
+                    format: float
+        '400':
+          description: Invalid input
+
+components:
+  schemas:
+    RecipeSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        score:
+          type: number
+          format: float
+
+    Ingredient:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        unit:
+          type: string
+
+    RecipeIngredient:
+      type: object
+      properties:
+        ingredient:
+          $ref: '#/components/schemas/Ingredient'
+        quantityPerPerson:
+          type: number
+          format: float
+
+    Step:
+      type: object
+      properties:
+        id:
+          type: integer
+        description:
+          type: string
+        order:
+          type: integer
+
+    RecipeDetail:
+      allOf:
+        - $ref: '#/components/schemas/RecipeSummary'
+        - type: object
+          properties:
+            ingredients:
+              type: array
+              items:
+                $ref: '#/components/schemas/RecipeIngredient'
+            steps:
+              type: array
+              items:
+                $ref: '#/components/schemas/Step'
