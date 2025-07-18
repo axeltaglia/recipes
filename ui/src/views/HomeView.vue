@@ -1,4 +1,3 @@
-<!-- src/views/HomeView.vue -->
 <template>
   <main>
     <h1>Welcome to the Recipe Admin</h1>
