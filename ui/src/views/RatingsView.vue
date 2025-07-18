@@ -44,12 +44,15 @@ const worstRatedRecipes = ref<Recipe[]>([])
 const recipeStore = useRecipeStore()
 
 onMounted(async () => {
-  await recipeStore.fetchRecipes(undefined, 'desc', 3)
-  bestRatedRecipes.value = [...recipeStore.recipes]
+  const [best, worst] = await Promise.all([
+    recipeStore.fetchRecipes(undefined, 'desc', 3),
+    recipeStore.fetchRecipes(undefined, 'asc', 3),
+  ])
 
-  await recipeStore.fetchRecipes(undefined, 'asc', 3)
-  worstRatedRecipes.value = [...recipeStore.recipes]
+  bestRatedRecipes.value = best
+  worstRatedRecipes.value = worst
 })
+
 </script>
 
 
