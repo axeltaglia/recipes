@@ -1,39 +1,5 @@
 package model
 
-// DATA MODEL
-
-type Ingredient struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
-	Unit string `json:"unit"`
-}
-
-type RecipeIngredient struct {
-	IngredientID      int     `json:"ingredient_id"`
-	RecipeID          int     `json:"recipe_id"`
-	QuantityPerPerson float64 `json:"quantityPerPerson"`
-}
-
-type Step struct {
-	ID          int    `json:"id"`
-	RecipeID    int    `json:"recipe_id"`
-	Description string `json:"description"`
-	Order       int    `json:"order"`
-}
-
-type Recipe struct {
-	ID    int     `json:"id"`
-	Name  string  `json:"name"`
-	Score float64 `json:"score"`
-}
-
-type RecipeRating struct {
-	RecipeID int
-	Value    int
-}
-
-// DATA SET
-
 var Ingredients = []Ingredient{
 	{ID: 1, Name: "Arroz", Unit: "grs"},
 	{ID: 2, Name: "Pechuga de Pollo", Unit: "Kgs"},

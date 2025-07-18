@@ -2,7 +2,6 @@
 <template>
   <main>
     <h1>Welcome to the Recipe Admin</h1>
-    <p>This is your home page.</p>
 
     <router-link to="/recipes">Go to Recipes List</router-link>
   </main>

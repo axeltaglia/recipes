@@ -3,6 +3,7 @@ package handler
 import (
 	"github.com/gofiber/fiber/v2"
 	"recipes/model"
+	"sort"
 )
 
 func GetRecipeByID(c *fiber.Ctx) error {
@@ -48,6 +49,10 @@ func GetRecipeByID(c *fiber.Ctx) error {
 			})
 		}
 	}
+
+	sort.Slice(steps, func(i, j int) bool {
+		return steps[i].Order < steps[j].Order
+	})
 
 	response := GetRecipeByIDResponse{
 		ID:          recipe.ID,

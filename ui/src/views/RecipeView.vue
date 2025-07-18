@@ -47,6 +47,7 @@
         </ul>
       </div>
     </div>
+
     <div class="rating">
       <select v-model="selectedRating">
         <option disabled value="">Puntaje</option>
@@ -55,7 +56,8 @@
       <button @click="submitRating">Guardar</button>
     </div>
 
-    <router-link to="/recipes" class="back-link">Volver al listado</router-link>
+    <router-link to="/recipes" class="back-link">Volver al listado</router-link> |
+    <router-link to="/ratings" class="back-link">Ver Valoraciones</router-link>
   </section>
 
   <p v-else>Cargando receta...</p>

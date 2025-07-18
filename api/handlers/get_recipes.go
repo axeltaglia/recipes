@@ -50,6 +50,7 @@ func GetRecipes(c *fiber.Ctx) error {
 			Name:  recipe.Name,
 			Score: recipe.Score,
 		})
+
 		count++
 		if limit > 0 && count == limit {
 			break
