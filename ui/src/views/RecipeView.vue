@@ -1,6 +1,6 @@
 <template>
-  <section v-if="recipe">
-    <h1>{{ recipe.name }} ({{ recipe.score.toFixed(2) }})</h1>
+  <section v-if="selectedRecipe">
+    <h1>{{ selectedRecipe.name }} ({{ selectedRecipe.score.toFixed(2) }})</h1>
 
     <div class="tabs">
       <button
@@ -26,7 +26,7 @@
         </label>
         <ul>
           <li
-              v-for="(ri, index) in recipe.ingredients"
+              v-for="(ri, index) in selectedRecipe.ingredients"
               :key="index"
           >
             {{ (ri.quantityPerPerson * people).toFixed(2)  }}
@@ -39,7 +39,7 @@
       <div v-if="activeTab === 'steps'">
         <ul>
           <li
-              v-for="step in recipe.steps"
+              v-for="step in selectedRecipe.steps"
               :key="step.id"
           >
             {{ step.description }}
@@ -64,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useRecipeStore } from '@/stores/recipe'
 import { storeToRefs } from 'pinia'
@@ -76,18 +76,16 @@ const { selectedRecipe } = storeToRefs(recipeStore)
 const activeTab = ref<'ingredients' | 'steps'>('ingredients')
 const people = ref(4)
 
+const selectedRating = ref<number | ''>('')
+
 onMounted(() => {
   const id = Number(route.params.id)
   recipeStore.fetchRecipeById(id)
 })
 
-const recipe = computed(() => selectedRecipe.value)
-
-const selectedRating = ref<number | ''>('')
-
 async function submitRating() {
-  if (!recipe.value || selectedRating.value === '') return
-  await recipeStore.rateRecipe(recipe.value.id, Number(selectedRating.value))
+  if (!selectedRecipe.value || selectedRating.value === '') return
+  await recipeStore.rateRecipe(selectedRecipe.value.id, Number(selectedRating.value))
   selectedRating.value = ''
 }
 
