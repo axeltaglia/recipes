@@ -12,7 +12,7 @@ func main() {
 	fmt.Println("Starting server...")
 	app := fiber.New()
 	app.Use(cors.New())
-
+	// server
 	api := app.Group("/api/v1")
 	api.Get("/recipes/:id", handler.GetRecipeByID)
 	api.Post("/recipes/:id/rate", handler.RateRecipe)
